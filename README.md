@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ConvertX
 
-## Getting Started
+**ConvertX** est une application web de conversion de devises en temps réel, développée avec **Next.js**, **React**, et **Tailwind CSS**. Elle permet de convertir facilement entre plusieurs devises, notamment l’Euro (EUR), le Dollar américain (USD), le Franc CFA Ouest (XOF), et le Franc CFA Centre (XAF).
 
-First, run the development server:
+---
+
+## Fonctionnalités
+
+- Conversion instantanée entre plusieurs devises.
+- Interface utilisateur simple et responsive.
+- Sélection intuitive des devises source et cible.
+- Affichage clair du résultat avec le montant converti.
+- Utilisation d’une API réelle pour des taux de change à jour.
+- Déploiement en ligne avec **Vercel** pour un accès public immédiat.
+
+---
+
+## Technologies utilisées
+
+- [Next.js](https://nextjs.org/) – Framework React pour le rendu côté serveur.
+- [React](https://reactjs.org/) – Bibliothèque pour construire l’interface utilisateur.
+- [Tailwind CSS](https://tailwindcss.com/) – Framework CSS pour un design rapide et responsive.
+- [ShadCN UI](https://ui.shadcn.com/) – Composants UI personnalisés.
+- [CurrencyAPI](https://currencyapi.net/) – API pour récupérer les taux de change.
+- Git & GitHub – Gestion de version.
+- [Vercel](https://vercel.com/) – Hébergement et déploiement du projet.
+
+---
+
+## Installation locale
+
+1. Clone le dépôt :
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+git clone https://github.com/elprofessor2001/convertx.git
+cd convertx
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Structure du projet
+convertx/
+├─ app/
+│  ├─ components/
+│  │  └─ CurrencyConverter.tsx
+│  └─ globals.css
+├─ components/
+│  └─ ui/
+├─ lib/
+│  └─ utils.ts
+├─ package.json
+├─ .env
+└─ README.md
+Auteur
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Parfait Gnawé
+GitHub : elprofessor2001
+Email : gnaweparfait1@gmail.com
