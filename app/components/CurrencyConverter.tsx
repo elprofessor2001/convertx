@@ -59,6 +59,7 @@ export default function CurrencyConverter() {
 
   return (
     <div className="space-y-6 p-4 max-w-md mx-auto">
+
       {/* Montant */}
       <div className="space-y-1">
         <label className="text-sm font-medium">Montant</label>
@@ -71,11 +72,11 @@ export default function CurrencyConverter() {
       </div>
 
       {/* Sélections de devises */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-1">
+      <div className="grid grid-cols-2 gap-6">
+        <div className="space-y-2">
           <label className="text-sm font-medium">De</label>
           <Select value={fromCurrency} onValueChange={setFromCurrency}>
-            <SelectTrigger>
+            <SelectTrigger className="h-12">
               <SelectValue placeholder="Choisir" />
             </SelectTrigger>
             <SelectContent>
@@ -88,10 +89,10 @@ export default function CurrencyConverter() {
           </Select>
         </div>
 
-        <div className="space-y-1">
+        <div className="space-y-2">
           <label className="text-sm font-medium">Vers</label>
           <Select value={toCurrency} onValueChange={setToCurrency}>
-            <SelectTrigger>
+            <SelectTrigger className="h-12">
               <SelectValue placeholder="Choisir" />
             </SelectTrigger>
             <SelectContent>
@@ -120,7 +121,7 @@ export default function CurrencyConverter() {
         </Card>
       )}
 
-      {/* Footer visible, un peu éloigné */}
+      {/* Footer */}
       <div className="mt-8 mb-4 text-center text-sm text-gray-500">
         Application créée par <span className="font-semibold">Gnawé Parfait</span>
       </div>
