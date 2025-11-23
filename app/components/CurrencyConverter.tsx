@@ -59,7 +59,6 @@ export default function CurrencyConverter() {
 
   return (
     <div className="space-y-6 p-4 max-w-md mx-auto">
-
       {/* Montant */}
       <div className="space-y-1">
         <label className="text-sm font-medium">Montant</label>
