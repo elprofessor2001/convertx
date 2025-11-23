@@ -29,14 +29,16 @@ export default function CurrencyConverter() {
         setIsLoading(true);
 
         try {
+            // ✅ Base dynamique selon la devise choisie
             const response = await fetch(
-                "https://v6.exchangerate-api.com/v6/6f7f4503a361467075538c50/latest/USD"
+                `https://v6.exchangerate-api.com/v6/${process.env.NEXT_PUBLIC_API_KEY}/latest/${fromCurrency}`
             );
 
             const data = await response.json();
 
             if (data.result === "error") throw new Error(data["error-type"]);
 
+            // Taux de conversion vers la devise cible
             const rate = data.conversion_rates[toCurrency];
             const calculatedResult = parseFloat(amount) * rate;
 
@@ -48,13 +50,10 @@ export default function CurrencyConverter() {
         setIsLoading(false);
     };
 
-    const availableCurrencies = currencies.filter(
-        (c) => c.code !== fromCurrency
-    );
+    const availableCurrencies = currencies.filter((c) => c.code !== fromCurrency);
 
     return (
         <div className="space-y-6 p-4 max-w-md mx-auto">
-            {/* MONTANT */}
             <div className="space-y-1">
                 <label className="text-sm font-medium">Montant</label>
                 <Input
@@ -65,9 +64,7 @@ export default function CurrencyConverter() {
                 />
             </div>
 
-            {/* SELECTS */}
             <div className="grid grid-cols-2 gap-4">
-                {/* FROM */}
                 <div className="space-y-1">
                     <label className="text-sm font-medium">De</label>
                     <Select value={fromCurrency} onValueChange={setFromCurrency}>
@@ -84,7 +81,6 @@ export default function CurrencyConverter() {
                     </Select>
                 </div>
 
-                {/* TO */}
                 <div className="space-y-1">
                     <label className="text-sm font-medium">Vers</label>
                     <Select value={toCurrency} onValueChange={setToCurrency}>
@@ -102,16 +98,10 @@ export default function CurrencyConverter() {
                 </div>
             </div>
 
-            {/* BUTTON */}
-            <Button
-                onClick={handleConvert}
-                className="w-full"
-                disabled={isLoading}
-            >
+            <Button onClick={handleConvert} className="w-full" disabled={isLoading}>
                 {isLoading ? "Conversion en cours..." : "Convertir"}
             </Button>
 
-            {/* RESULT */}
             {result !== null && (
                 <Card className="p-4 text-center font-medium text-lg">
                     {amount} {fromCurrency} ={" "}
