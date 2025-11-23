@@ -29,7 +29,6 @@ export default function CurrencyConverter() {
         setIsLoading(true);
 
         try {
-            // ✅ Base dynamique selon la devise choisie
             const response = await fetch(
                 `https://v6.exchangerate-api.com/v6/${process.env.NEXT_PUBLIC_API_KEY}/latest/${fromCurrency}`
             );
@@ -38,7 +37,6 @@ export default function CurrencyConverter() {
 
             if (data.result === "error") throw new Error(data["error-type"]);
 
-            // Taux de conversion vers la devise cible
             const rate = data.conversion_rates[toCurrency];
             const calculatedResult = parseFloat(amount) * rate;
 
@@ -53,63 +51,70 @@ export default function CurrencyConverter() {
     const availableCurrencies = currencies.filter((c) => c.code !== fromCurrency);
 
     return (
-        <div className="space-y-6 p-4 max-w-md mx-auto">
-            <div className="space-y-1">
-                <label className="text-sm font-medium">Montant</label>
-                <Input
-                    placeholder="Entrez un montant"
-                    type="number"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
+        <div className="flex flex-col min-h-screen justify-between">
+            <div className="space-y-6 p-4 max-w-md mx-auto mt-8">
                 <div className="space-y-1">
-                    <label className="text-sm font-medium">De</label>
-                    <Select value={fromCurrency} onValueChange={setFromCurrency}>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Choisir" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {currencies.map((c) => (
-                                <SelectItem key={c.code} value={c.code}>
-                                    {c.name} ({c.code})
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                    <label className="text-sm font-medium">Montant</label>
+                    <Input
+                        placeholder="Entrez un montant"
+                        type="number"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                    />
                 </div>
 
-                <div className="space-y-1">
-                    <label className="text-sm font-medium">Vers</label>
-                    <Select value={toCurrency} onValueChange={setToCurrency}>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Choisir" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {availableCurrencies.map((c) => (
-                                <SelectItem key={c.code} value={c.code}>
-                                    {c.name} ({c.code})
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                        <label className="text-sm font-medium">De</label>
+                        <Select value={fromCurrency} onValueChange={setFromCurrency}>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Choisir" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {currencies.map((c) => (
+                                    <SelectItem key={c.code} value={c.code}>
+                                        {c.name} ({c.code})
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    <div className="space-y-1">
+                        <label className="text-sm font-medium">Vers</label>
+                        <Select value={toCurrency} onValueChange={setToCurrency}>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Choisir" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {availableCurrencies.map((c) => (
+                                    <SelectItem key={c.code} value={c.code}>
+                                        {c.name} ({c.code})
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
                 </div>
+
+                <Button onClick={handleConvert} className="w-full" disabled={isLoading}>
+                    {isLoading ? "Conversion en cours..." : "Convertir"}
+                </Button>
+
+                {result !== null && (
+                    <Card className="p-4 text-center font-medium text-lg">
+                        {amount} {fromCurrency} ={" "}
+                        <span className="text-blue-600 font-bold">
+                            {result.toFixed(2)} {toCurrency}
+                        </span>
+                    </Card>
+                )}
             </div>
 
-            <Button onClick={handleConvert} className="w-full" disabled={isLoading}>
-                {isLoading ? "Conversion en cours..." : "Convertir"}
-            </Button>
-
-            {result !== null && (
-                <Card className="p-4 text-center font-medium text-lg">
-                    {amount} {fromCurrency} ={" "}
-                    <span className="text-blue-600 font-bold">
-                        {result.toFixed(2)} {toCurrency}
-                    </span>
-                </Card>
-            )}
+            {/* Footer stylé */}
+            <footer className="text-center py-4 bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-300 mt-8">
+                &copy; {new Date().getFullYear()} Application créée par <strong>Gnawé Parfait</strong>
+            </footer>
         </div>
     );
 }
