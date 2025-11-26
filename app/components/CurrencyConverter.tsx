@@ -12,6 +12,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
+import { convertCurrency } from "@/lib/convert";
+
+/* ------------------------ */
+/*   10 DEVISES COMPLÈTES   */
+/* ------------------------ */
 const currencies = [
   { code: "EUR", name: "Euro" },
   { code: "USD", name: "US Dollar" },
@@ -19,8 +24,15 @@ const currencies = [
   { code: "JPY", name: "Japanese Yen" },
   { code: "AUD", name: "Australian Dollar" },
   { code: "CAD", name: "Canadian Dollar" },
-  { code: "XAF", name: "Central African CFA Franc" },
-  { code: "XOF", name: "West African CFA Franc" },
+  { code: "CHF", name: "Swiss Franc" },
+  { code: "CNY", name: "Chinese Yuan" },
+  { code: "INR", name: "Indian Rupee" },
+  { code: "RUB", name: "Russian Ruble" },
+  { code: "XAF", name: "Franc CFA Afrique Centrale" },
+  { code: "XOF", name: "Franc CFA Afrique de l'Ouest" },
+  { code: "GHS", name: "Ghanaian Cedi" },
+  { code: "NGN", name: "Nigerian Naira" },
+  { code: "GNF", name: "Guinean Franc" },
 ];
 
 export default function CurrencyConverter() {
@@ -29,51 +41,82 @@ export default function CurrencyConverter() {
   const [toCurrency, setToCurrency] = useState("USD");
   const [result, setResult] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const formatCurrency = (value: number, currency: string): string => {
+    try {
+      return new Intl.NumberFormat("fr-FR", {
+        style: "currency",
+        currency: currency,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }).format(value);
+    } catch (e) {
+      return `${value.toFixed(2)} ${currency}`;
+    }
+  };
 
   const handleConvert = async () => {
-    if (!amount) return;
+    if (!amount || parseFloat(amount) <= 0) {
+      setError("Veuillez entrer un montant valide.");
+      setResult(null);
+      return;
+    }
 
     setIsLoading(true);
+    setError(null);
 
     try {
-      const response = await fetch(
-        `https://v6.exchangerate-api.com/v6/${process.env.NEXT_PUBLIC_API_KEY}/latest/${fromCurrency}`
+      const numericAmount = parseFloat(amount);
+
+      const converted = await convertCurrency(
+        numericAmount,
+        fromCurrency,
+        toCurrency
       );
 
-      const data = await response.json();
-
-      if (data.result === "error") throw new Error(data["error-type"]);
-
-      const rate = data.conversion_rates[toCurrency];
-      const calculatedResult = parseFloat(amount) * rate;
-
-      setResult(calculatedResult);
-    } catch (err) {
-      console.error("Erreur conversion :", err);
+      setResult(converted);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Une erreur inconnue est survenue lors de la conversion.");
+      }
+      setResult(null);
     }
 
     setIsLoading(false);
   };
 
-  const availableCurrencies = currencies.filter((c) => c.code !== fromCurrency);
+  const handleSwap = () => {
+    setFromCurrency(toCurrency);
+    setToCurrency(fromCurrency);
+    setResult(null);
+  };
 
   return (
-    <div className="space-y-6 p-4 max-w-md mx-auto">
+    <div className="space-y-8">
       {/* Montant */}
-      <div className="space-y-1">
-        <label className="text-sm font-medium">Montant</label>
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-gray-700">Montant</label>
         <Input
-          placeholder="Entrez un montant"
+          placeholder="Ex : 100"
           type="number"
           value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          onChange={(e) => {
+            setAmount(e.target.value);
+            setError(null);
+          }}
+          className="h-12 text-lg"
         />
       </div>
 
-      {/* Sélections de devises */}
-      <div className="grid grid-cols-2 gap-6">
-        <div className="space-y-2">
-          <label className="text-sm font-medium">De</label>
+      {/* Ligne de sélection */}
+      <div className="flex flex-col lg:flex-row items-center gap-4">
+
+        {/* From */}
+        <div className="flex-1 w-full space-y-2">
+          <label className="text-sm font-medium text-gray-700">De</label>
           <Select value={fromCurrency} onValueChange={setFromCurrency}>
             <SelectTrigger className="h-12">
               <SelectValue placeholder="Choisir" />
@@ -88,41 +131,71 @@ export default function CurrencyConverter() {
           </Select>
         </div>
 
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Vers</label>
+        {/* Swap */}
+        <Button
+          onClick={handleSwap}
+          variant="secondary"
+          size="icon"
+          className="lg:mt-6 w-12 h-12 rounded-full shadow-sm hover:shadow transition"
+          aria-label="Échanger les devises"
+          disabled={isLoading}
+        >
+          <span className="text-xl">↔</span>
+        </Button>
+
+        {/* To */}
+        <div className="flex-1 w-full space-y-2">
+          <label className="text-sm font-medium text-gray-700">Vers</label>
           <Select value={toCurrency} onValueChange={setToCurrency}>
             <SelectTrigger className="h-12">
               <SelectValue placeholder="Choisir" />
             </SelectTrigger>
             <SelectContent>
-              {availableCurrencies.map((c) => (
-                <SelectItem key={c.code} value={c.code}>
-                  {c.name} ({c.code})
-                </SelectItem>
-              ))}
+              {currencies
+                .filter((c) => c.code !== fromCurrency)
+                .map((c) => (
+                  <SelectItem key={c.code} value={c.code}>
+                    {c.name} ({c.code})
+                  </SelectItem>
+                ))}
             </SelectContent>
           </Select>
         </div>
       </div>
 
-      {/* Bouton convertir */}
-      <Button onClick={handleConvert} className="w-full" disabled={isLoading}>
-        {isLoading ? "Conversion en cours..." : "Convertir"}
+      {/* Button */}
+      <Button
+        onClick={handleConvert}
+        className="w-full h-12 text-lg font-semibold rounded-xl bg-blue-600 hover:bg-blue-700 transition"
+        disabled={isLoading}
+      >
+        {isLoading ? "Conversion..." : "Convertir"}
       </Button>
 
+      {/* Error */}
+      {error && (
+        <Card className="p-4 text-center bg-red-50 border border-red-300 text-red-700 font-medium rounded-xl">
+          {error}
+        </Card>
+      )}
+
       {/* Résultat */}
-      {result !== null && (
-        <Card className="p-4 text-center font-medium text-lg">
-          {amount} {fromCurrency} ={" "}
-          <span className="text-blue-600 font-bold">
-            {result.toFixed(2)} {toCurrency}
-          </span>
+      {result !== null && !error && (
+        <Card className="p-6 bg-gray-50 border border-gray-200 rounded-xl">
+          <p className="text-sm text-gray-600 mb-1">Montant Converti</p>
+          <p className="text-3xl font-extrabold text-blue-600">
+            {formatCurrency(result, toCurrency)}
+          </p>
+          <p className="text-sm text-gray-500 mt-3">
+            1 {fromCurrency} ={" "}
+            {(result / parseFloat(amount)).toFixed(4)} {toCurrency}
+          </p>
         </Card>
       )}
 
       {/* Footer */}
-      <div className="mt-8 mb-4 text-center text-sm text-gray-500">
-        Application créée par <span className="font-semibold">Gnawé Parfait</span>
+      <div className="text-center text-sm text-gray-700 pt-2">
+        Créé par <span className="font-semibold">Gnawé Parfait</span>
       </div>
     </div>
   );

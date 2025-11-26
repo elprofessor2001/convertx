@@ -1,55 +1,110 @@
-# ConvertX
+# 🚀 ConvertX — Convertisseur de devises moderne
 
-**ConvertX** est une application web de conversion de devises en temps réel, développée avec **Next.js**, **React**, et **Tailwind CSS**. Elle permet de convertir facilement entre plusieurs devises, notamment l’Euro (EUR), le Dollar américain (USD), le Franc CFA Ouest (XOF), et le Franc CFA Centre (XAF).
-
----
-
-## Fonctionnalités
-
-- Conversion instantanée entre plusieurs devises.
-- Interface utilisateur simple et responsive.
-- Sélection intuitive des devises source et cible.
-- Affichage clair du résultat avec le montant converti.
-- Utilisation d’une API réelle pour des taux de change à jour.
-- Déploiement en ligne avec **Vercel** pour un accès public immédiat.
+**ConvertX** est une application web moderne de conversion de devises en temps réel, construite avec **Next.js**, **React**, **Tailwind CSS**, et **ShadCN UI**.
+Elle offre une interface professionnelle, intuitive, avec mode **clair/sombre**, sélection fluide des devises et des conversions instantanées.
 
 ---
 
-## Technologies utilisées
+## ✨ Fonctionnalités
 
-- [Next.js](https://nextjs.org/) – Framework React pour le rendu côté serveur.
-- [React](https://reactjs.org/) – Bibliothèque pour construire l’interface utilisateur.
-- [Tailwind CSS](https://tailwindcss.com/) – Framework CSS pour un design rapide et responsive.
-- [ShadCN UI](https://ui.shadcn.com/) – Composants UI personnalisés.
-- [CurrencyAPI](https://currencyapi.net/) – API pour récupérer les taux de change.
-- Git & GitHub – Gestion de version.
-- [Vercel](https://vercel.com/) – Hébergement et déploiement du projet.
+* 🔄 **Conversion instantanée** entre plus de 15 devises (EUR, USD, XOF, XAF, GNF, GHS, NGN…)
+* 🎨 **Interface moderne & responsive**
+* 🌓 **Mode sombre et clair** avec bouton toggle global
+* 🔁 Inversion des devises (swap)
+* 🎯 Résultat clair, formaté automatiquement selon la devise
+* ⚡ API de taux de change **en temps réel**
+* 🚀 Déploiement automatique avec **Vercel**
+* 🎛️ Composants UI élégants avec **ShadCN UI**
+* 🪶 Code propre, optimisé et maintenable
 
 ---
 
-## Installation locale
+## 🛠 Technologies utilisées
 
-1. Clone le dépôt :
+* **Next.js 14+** — Framework React moderne
+* **React** — Construction des interfaces
+* **Tailwind CSS** — Style rapide, responsive, propre
+* **ShadCN UI** — Composants UI professionnels
+* **CurrencyAPI** — Récupération des taux de change
+* **TypeScript** — Typage strict et sûr
+* **Vercel** — Déploiement continu
+* **Git & GitHub** — Versioning
+
+---
+
+## 📦 Installation locale
+
+1. Clone le projet :
 
 ```bash
 git clone https://github.com/elprofessor2001/convertx.git
 cd convertx
+```
 
-Structure du projet
+2. Installe les dépendances :
+
+```bash
+npm install
+```
+
+3. Configure ton fichier **.env** :
+
+```env
+NEXT_PUBLIC_API_KEY=ta_clef_api_ici
+```
+
+4. Lance l’application :
+
+```bash
+npm run dev
+```
+
+---
+
+## 🧱 Structure du projet (mise à jour)
+
+```
 convertx/
 ├─ app/
 │  ├─ components/
-│  │  └─ CurrencyConverter.tsx
+│  │  ├─ CurrencyConverter.tsx
+│  │  ├─ Header.tsx
+│  │  └─ ThemeToggle.tsx
+│  ├─ layout.tsx
+│  ├─ page.tsx
 │  └─ globals.css
+│
 ├─ components/
-│  └─ ui/
+│  └─ ui/   (ShadCN)
+│
 ├─ lib/
+│  ├─ convert.ts
 │  └─ utils.ts
+│
+├─ public/
+│  └─ logos / icons / etc.
+│
+├─ tailwind.config.js
 ├─ package.json
 ├─ .env
 └─ README.md
-Auteur
+```
 
-Parfait Gnawé
-GitHub : elprofessor2001
-Email : gnaweparfait1@gmail.com
+---
+
+## 🌍 Déploiement
+
+Le projet est hébergé sur **Vercel**, ce qui permet :
+
+* déploiement automatique à chaque push sur GitHub
+* prévisualisation instantanée
+* URLs publiques prêtes à partager
+
+---
+
+## 👤 Auteur
+
+**Parfait Gnawé**
+
+* GitHub : [elprofessor2001](https://github.com/elprofessor2001)
+* Email : [gnaweparfait1@gmail.com](mailto:gnaweparfait1@gmail.com)

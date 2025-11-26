@@ -1,6 +1,8 @@
+/* ----- TAILWIND ----- */
 @import "tailwindcss";
 @custom-variant dark (&:is(.dark *));
 
+/* ----- SHADCN THEME DEFINITIONS ----- */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -41,6 +43,7 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+/* ----- ROOT COLORS (LIGHT MODE) ----- */
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -76,6 +79,7 @@
   --sidebar-ring: oklch(0.705 0.015 286.067);
 }
 
+/* ----- DARK MODE ----- */
 .dark {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
@@ -110,6 +114,7 @@
   --sidebar-ring: oklch(0.552 0.016 285.938);
 }
 
+/* ----- BASE TAILWIND RESET ----- */
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -117,4 +122,64 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* ------------------------------------------------------- */
+/* --- UI IMPROVEMENTS ADDED (DESIGN BOOST) -------------- */
+/* ------------------------------------------------------- */
+
+/* ----- XE.COM Inspired Background (Light Mode) ----- */
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% 0%,
+    #e8f1ff 0%,
+    #dde8fb 35%,
+    #d0def5 70%,
+    #c6d5ef 100%
+  );
+}
+
+/* ----- Dark Mode Premium (XE Pro Style) ----- */
+.dark body {
+  background: radial-gradient(circle at 50% 0%,
+    #121824 0%,
+    #0f1520 40%,
+    #0c111a 70%,
+    #0a0d14 100%
+  );
+}
+
+/* --- Premium Card Component --- */
+.card-elevated {
+  background: var(--card);
+  border-radius: 1.4rem;
+  padding: 2rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.04);
+  backdrop-filter: blur(12px);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.dark .card-elevated {
+  box-shadow: 0 12px 45px rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(14px);
+}
+
+/* --- Fade-in Animation --- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Gradient Title --- */
+.gradient-title {
+  background: linear-gradient(
+    90deg,
+    oklch(0.4 0.1 260),
+    oklch(0.55 0.12 250)
+  );
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: 700;
 }
